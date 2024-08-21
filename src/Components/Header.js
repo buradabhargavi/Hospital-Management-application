@@ -1,7 +1,11 @@
 import React from "react";
 
-function Header() {
-  return <button>Cart</button>;
+function Header({ onShowCart }) {
+  return (
+    <div>
+      <button onClick={onShowCart}>Cart</button>
+    </div>
+  );
 }
 
 export default Header;

@@ -1,34 +1,48 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import CartContext from "./CartContext";
 import axios from "axios";
 
 function CartProvider(props) {
-  const addItem = async (item) => {
-    try {
-      const res = await axios.post(
-        "https://crudcrud.com/api/9c192425aa2c4c0895465196f2e43ce4/cart",
-        item
-      );
+  const [items, setItems] = useState([]);
+  useEffect(() => {
+    fetchItems();
+  }, []);
 
-      //  console.log(res.data);
-      return res.data;
+  const fetchItems = async () => {
+    try {
+      const response = await axios.get(
+        "https://crudcrud.com/api/5f1f02359bd247839b4c2761cb0c4501/cart"
+      );
+      setItems(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const addItem = (item) => {
+    const { _id: id, medicineName, description, price, quantity } = item;
+    try {
+      axios.post(
+        "https://crudcrud.com/api/5f1f02359bd247839b4c2761cb0c4501/cart",
+        { id, medicineName, description, price, quantity }
+      );
+      fetchItems();
     } catch (error) {
       console.log(error);
     }
   };
   const deleteItem = async (id) => {
     try {
-      const res = await axios.delete(
-        `https://crudcrud.com/Dashboard/9c192425aa2c4c0895465196f2e43ce4/cart/${id}`
+      axios.delete(
+        `https://crudcrud.com/api/5f1f02359bd247839b4c2761cb0c4501/cart/${id}`
       );
-      //  console.log(res.data);
-      return res.data;
+      fetchItems();
     } catch (error) {
       console.log(error);
     }
   };
 
   const cartVal = {
+    items: items,
     addItem: addItem,
     deleteItem: deleteItem,
   };

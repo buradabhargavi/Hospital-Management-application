@@ -1,21 +1,18 @@
-import React, { useState } from "react";
-import ItemsConext from "./ItemsContext";
+import React, { useState, useEffect } from "react";
+import ItemsContext from "./ItemsContext";
 import axios from "axios";
-import { useEffect } from "react";
 
 const ItemsProvider = (props) => {
   const [items, setItems] = useState([]);
-  // console.log(items);
 
   const fetchItems = async () => {
     try {
       const res = await axios.get(
-        "https://crudcrud.com/api/9c192425aa2c4c0895465196f2e43ce4/Items"
+        "https://crudcrud.com/api/5f1f02359bd247839b4c2761cb0c4501/Items"
       );
-
       setItems(res.data);
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching items:", error);
     }
   };
 
@@ -23,39 +20,41 @@ const ItemsProvider = (props) => {
     fetchItems();
   }, []);
 
-  const addItem = (item) => {
+  const addItem = async (item) => {
     try {
-      axios.post(
-        "https://crudcrud.com/api/9c192425aa2c4c0895465196f2e43ce4/Items",
+      await axios.post(
+        "https://crudcrud.com/api/5f1f02359bd247839b4c2761cb0c4501/Items",
         item
       );
       fetchItems();
     } catch (error) {
-      console.log(error);
+      console.error("Error adding item:", error);
     }
   };
 
-  const updateItem = (item) => {
+  const updateItem = async (item) => {
     try {
-      axios.put(
-        "https://crudcrud.com/api/9c192425aa2c4c0895465196f2e43ce4/Items",
+      await axios.put(
+        `https://crudcrud.com/api/5f1f02359bd247839b4c2761cb0c4501/Items/${item._id}`,
         item
       );
       fetchItems();
     } catch (error) {
-      console.log(error);
+      console.error("Error updating item:", error);
     }
   };
 
   const itemval = {
-    items: items,
-    updateItem: updateItem,
-    addItem: addItem,
+    items,
+    updateItem,
+    addItem,
   };
+
   return (
-    <ItemsConext.Provider value={itemval}>
+    <ItemsContext.Provider value={itemval}>
       {props.children}
-    </ItemsConext.Provider>
+    </ItemsContext.Provider>
   );
 };
+
 export default ItemsProvider;

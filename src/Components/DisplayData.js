@@ -10,8 +10,8 @@ function DisplayData() {
   return (
     <div>
       <ul style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-        {items.map((item) => {
-          return <DisplayItem item={item} />;
+        {items.map((item, index) => {
+          return <DisplayItem item={item} key={index} />;
         })}
       </ul>
     </div>
