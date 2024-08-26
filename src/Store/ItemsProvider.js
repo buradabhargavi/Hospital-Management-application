@@ -8,7 +8,7 @@ const ItemsProvider = (props) => {
   const fetchItems = async () => {
     try {
       const res = await axios.get(
-        "https://crudcrud.com/api/5f1f02359bd247839b4c2761cb0c4501/Items"
+        "https://crudcrud.com/api/089a17588e434b9ba4dfbec75b7aa99b/Items"
       );
       setItems(res.data);
     } catch (error) {
@@ -23,10 +23,10 @@ const ItemsProvider = (props) => {
   const addItem = async (item) => {
     try {
       await axios.post(
-        "https://crudcrud.com/api/5f1f02359bd247839b4c2761cb0c4501/Items",
+        "https://crudcrud.com/api/089a17588e434b9ba4dfbec75b7aa99b/Items",
         item
       );
-      fetchItems();
+      await fetchItems();
     } catch (error) {
       console.error("Error adding item:", error);
     }
@@ -35,10 +35,10 @@ const ItemsProvider = (props) => {
   const updateItem = async (item) => {
     try {
       await axios.put(
-        `https://crudcrud.com/api/5f1f02359bd247839b4c2761cb0c4501/Items/${item._id}`,
+        `https://crudcrud.com/api/089a17588e434b9ba4dfbec75b7aa99b/Items/${item._id}`,
         item
       );
-      fetchItems();
+      await fetchItems();
     } catch (error) {
       console.error("Error updating item:", error);
     }

@@ -4,48 +4,52 @@ import axios from "axios";
 
 function CartProvider(props) {
   const [items, setItems] = useState([]);
-  useEffect(() => {
-    fetchItems();
-  }, []);
 
   const fetchItems = async () => {
     try {
       const response = await axios.get(
-        "https://crudcrud.com/api/5f1f02359bd247839b4c2761cb0c4501/cart"
+        "https://crudcrud.com/api/089a17588e434b9ba4dfbec75b7aa99b/cart"
       );
       setItems(response.data);
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching cart items:", error);
     }
   };
-  const addItem = (item) => {
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
+
+  const addItem = async (item) => {
     const { _id: id, medicineName, description, price, quantity } = item;
     try {
-      axios.post(
-        "https://crudcrud.com/api/5f1f02359bd247839b4c2761cb0c4501/cart",
+      await axios.post(
+        "https://crudcrud.com/api/089a17588e434b9ba4dfbec75b7aa99b/cart",
         { id, medicineName, description, price, quantity }
       );
-      fetchItems();
+      await fetchItems();
     } catch (error) {
-      console.log(error);
+      console.error("Error adding cart item:", error);
     }
   };
+
   const deleteItem = async (id) => {
     try {
-      axios.delete(
-        `https://crudcrud.com/api/5f1f02359bd247839b4c2761cb0c4501/cart/${id}`
+      await axios.delete(
+        `https://crudcrud.com/api/089a17588e434b9ba4dfbec75b7aa99b/cart/${id}`
       );
-      fetchItems();
+      await fetchItems();
     } catch (error) {
-      console.log(error);
+      console.error("Error deleting cart item:", error);
     }
   };
 
   const cartVal = {
-    items: items,
-    addItem: addItem,
-    deleteItem: deleteItem,
+    items,
+    addItem,
+    deleteItem,
   };
+
   return (
     <CartContext.Provider value={cartVal}>
       {props.children}
